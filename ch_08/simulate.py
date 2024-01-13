@@ -16,12 +16,10 @@ logger = logging.getLogger(os.path.basename(__file__))
 def get_simulation_file_path(path_provided, directory, default_file):
     """Get the path to the file creating the directory and using the default if necessary."""
     if path_provided:
-        file = path_provided
-    else:
-        if not os.path.exists(directory):
-            os.mkdir(directory)
-        file = os.path.join(directory, default_file)
-    return file
+        return path_provided
+    if not os.path.exists(directory):
+        os.mkdir(directory)
+    return os.path.join(directory, default_file)
 
 def get_user_base_file_path(path_provided, default_file):
     """Get the path for a user_data directory file."""

@@ -24,7 +24,7 @@ def run_checks(raise_exc=False):
     failures = []
 
     # check the python version
-    print('Using Python in %s:' % sys.prefix)
+    print(f'Using Python in {sys.prefix}:')
     if Version(sys.version) >= '3.7.1' and Version(sys.version) < '3.10.0':
         print(OK, 'Python is version %s\n' % sys.version)
     else:
@@ -35,8 +35,7 @@ def run_checks(raise_exc=False):
     with open('../requirements.txt', 'r') as file:
         requirements = {}
         for line in file.read().splitlines():
-            github_package = re.search(github_package_pattern, line)
-            if github_package:
+            if github_package := re.search(github_package_pattern, line):
                 pkg = github_package.group(1).replace('-', '_')
                 version = None
             else:
@@ -66,17 +65,22 @@ def run_checks(raise_exc=False):
                 if isinstance(req_version, list):
                     min_version, max_version = req_version
                     if Version(version) < min_version or Version(version) > max_version:
-                        print(FAIL, '%s version >= %s and <= %s is required, but %s installed.' % (pkg, min_version, max_version, version))
+                        print(
+                            FAIL,
+                            f'{pkg} version >= {min_version} and <= {max_version} is required, but {version} installed.',
+                        )
                         failures.append(pkg)
                         continue
-                else:
-                    if Version(version) != req_version:
-                        print(FAIL, '%s version %s is required, but %s installed.' % (pkg, req_version, version))
-                        failures.append(pkg)
-                        continue
-            print(OK, '%s' % pkg)
+                elif Version(version) != req_version:
+                    print(
+                        FAIL,
+                        f'{pkg} version {req_version} is required, but {version} installed.',
+                    )
+                    failures.append(pkg)
+                    continue
+            print(OK, f'{pkg}')
         except ImportError:
-            print(FAIL, '%s not installed.' % pkg)
+            print(FAIL, f'{pkg} not installed.')
             failures.append(pkg)
 
     if failures and raise_exc:

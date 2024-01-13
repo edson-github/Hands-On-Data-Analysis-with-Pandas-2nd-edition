@@ -109,16 +109,15 @@ def random_walk_stock_comparison(df, choices=[-1, 1], probs=[0.5, 0.5], seed=2):
                 choices, weights=probs, k=len(df.index) - 1
             )
             walk = [df.first('1B').close.iat[0]]
-            for step in steps:
-                walk.append(walk[-1] + step)
+            walk.extend(walk[-1] + step for step in steps)
             ax.plot(df.index, walk)
         ax.set_ylabel('price')
-        
+
         ax.set_title(string.ascii_uppercase[i])
 
         for spine in ['top', 'right']:
             ax.spines[spine].set_visible(False)
 
     real_stock = f'real stock is at location {string.ascii_uppercase[stock_location]}'
-    
+
     return real_stock, axes
