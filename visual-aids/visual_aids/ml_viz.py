@@ -110,14 +110,12 @@ def isolation_forest():
 
     fig = plt.figure(figsize=(20, 30))
     grid_dims = (6, 8)
-    axes = []
-
     # original data
     ax = df.plot(
         x='feature_1', y='feature_2', kind='scatter', title='starting data', 
         ax=plt.subplot2grid(grid_dims, (0, 4), colspan=2)
     )
-    axes.append(ax)
+    axes = [ax]
     plt.subplots_adjust(hspace=0.25)
 
     # first split

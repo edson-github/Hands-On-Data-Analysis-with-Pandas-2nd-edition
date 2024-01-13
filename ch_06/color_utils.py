@@ -22,9 +22,7 @@ def hex_to_rgb_color_list(colors):
     if isinstance(colors, str):
         colors = [colors]
 
-    for i, color in enumerate(
-        [color.replace('#', '') for color in colors]
-    ):
+    for i, color in enumerate(color.replace('#', '') for color in colors):
         hex_length = len(color)
 
         if hex_length not in [3, 6]:
